@@ -1614,7 +1614,7 @@ class MusicBot(discord.Client):
         Usage:
             {command_prefix}plreplace url
 
-        Dumps the individual urls of a playlist
+        Replaces the autoplaylist with the following playlist. Must restart for changes to take place.
         """
 
         try:
@@ -1652,6 +1652,9 @@ class MusicBot(discord.Client):
 
             fcontent.seek(0)
             write_file(self.config.auto_playlist_file, fcontent)
+            os.system("sed -i \"s/b'//g\" config/autoplaylist.txt")
+            os.system("sed -i \"s/\\\\\\n'//g\" config/autoplaylist.txt")
+
             await self.send_message(channel, 'Playlist will be dumped to autoplaylist. Type !restart to load the new autoplaylist.')
 
         return Response(":mailbox_with_mail:", delete_after=20)
